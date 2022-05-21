@@ -14,14 +14,14 @@ public class SimpleIslandFinder implements IslandFinder {
     for (int y = 0; y < islandMap.getY(); y++) {
       for (int x = 0; x < islandMap.getX(); x++) {
         if (map[y][x] == 1) {
-          travelThePoint(x, y, islands);
+          addPointToIsland(x, y, islands);
         }
       }
     }
     return islands.size();
   }
 
-  private void travelThePoint(int x, int y, List<Island> islands) {
+  private void addPointToIsland(int x, int y, List<Island> islands) {
     Point islandPoint = new Point(x, y);
     List<Island> adjacentIslands = islands.stream()
         .filter(island -> island.isPointAdjacent(islandPoint)).toList();
@@ -30,22 +30,22 @@ public class SimpleIslandFinder implements IslandFinder {
       Island newIsland = new Island();
       newIsland.addPoint(islandPoint);
       islands.add(newIsland);
-    }
-
-    if (adjacentIslands.size() == 1) {
+    } else if (adjacentIslands.size() == 1) {
       adjacentIslands.get(0).addPoint(islandPoint);
+    } else {
+      mergeIslands(islands, islandPoint, adjacentIslands);
     }
+  }
 
-    if (adjacentIslands.size() > 1) {
-      Set<Point> mergedIslandPoints = adjacentIslands.stream()
-          .flatMap(island -> island.getIslandPoints().stream())
-          .collect(Collectors.toSet());
-      mergedIslandPoints.add(islandPoint);
+  private void mergeIslands(List<Island> islands, Point islandPoint, List<Island> adjacentIslands) {
+    Set<Point> mergedIslandPoints = adjacentIslands.stream()
+        .flatMap(island -> island.getIslandPoints().stream())
+        .collect(Collectors.toSet());
+    mergedIslandPoints.add(islandPoint);
 
-      adjacentIslands.forEach(islands::remove);
-      Island mergedIsland = new Island(mergedIslandPoints);
-      islands.add(mergedIsland);
-    }
+    adjacentIslands.forEach(islands::remove);
+    Island mergedIsland = new Island(mergedIslandPoints);
+    islands.add(mergedIsland);
   }
 
 }
