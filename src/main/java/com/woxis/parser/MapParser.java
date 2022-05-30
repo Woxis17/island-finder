@@ -2,6 +2,8 @@ package com.woxis.parser;
 
 import com.woxis.island.IslandMap;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +13,7 @@ import java.util.Optional;
 
 import static com.woxis.parser.IslandMapProperties.MAX_ALLOWED_SIZE;
 
+@Slf4j
 public class MapParser {
 
   private static final String ISLAND_TILE = "1";
@@ -34,7 +37,7 @@ public class MapParser {
 
       return Optional.of(new IslandMap(map, getXDimensionSize(map), yDimension));
     } catch (IOException e) {
-      System.out.println("Cannot parse map");
+      log.error("Cannot parse map");
     }
     return Optional.empty();
   }

@@ -7,7 +7,7 @@ import static com.woxis.parser.IslandMapProperties.MAX_ALLOWED_SIZE;
 public class MapValidator {
 
   public void validate(IslandMap islandMap) {
-    if (islandMap.getX() > MAX_ALLOWED_SIZE || islandMap.getY() > MAX_ALLOWED_SIZE) {
+    if (islandMap.getMapWidth() > MAX_ALLOWED_SIZE || islandMap.getMapHeight() > MAX_ALLOWED_SIZE) {
       throw new MapToBigException();
     }
   }

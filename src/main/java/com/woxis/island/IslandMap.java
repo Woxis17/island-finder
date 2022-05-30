@@ -1,34 +1,38 @@
 package com.woxis.island;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Data
 public class IslandMap {
 
-  private int x;
-  private int y;
+  private int mapWidth;
+  private int mapHeight;
   private Byte[][] map;
 
-  public IslandMap(Byte[][] map, int x, int y) {
+  public IslandMap(Byte[][] map, int mapWidth, int mapHeight) {
     this.map = map;
-    this.x = x;
-    this.y = y;
+    this.mapWidth = mapWidth;
+    this.mapHeight = mapHeight;
   }
 
   public void printMap() {
-    if (x < 100 && y < 100) {
-      for (int y = 0; y < getY(); y++) {
-        for (int x = 0; x < getX(); x++) {
+    StringBuilder sb = new StringBuilder("\n");
+    if (mapWidth < 100 && mapHeight < 100) {
+      for (int y = 0; y < getMapHeight(); y++) {
+        for (int x = 0; x < getMapWidth(); x++) {
           if (map[y][x] == 1) {
-            System.out.print("1 ");
+            sb.append("1 ");
           } else {
-            System.out.print("0 ");
+            sb.append("0 ");
           }
         }
-        System.out.println("/");
+        sb.append("\n");
       }
+      log.info(sb.toString());
     } else {
-      System.out.println("Map is printed only for maps which are less then 100 in any dimension");
+      log.info("Map is printed only for maps which are less then 100 in any dimension");
     }
   }
 
